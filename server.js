@@ -1,15 +1,16 @@
 const express = require("express");
-const htmlRoute = require("./routes/htmlroute");
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-// serve notes api
-app.use("/api/notes", require("./routes/notes"));
-
 // serve html pages
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(express.static("public"));
-app.use("/", htmlRoute);
+
+// serve notes api
+app.use("/api", require("./routes/notes")); // api route
+app.use("/", require("./routes/htmlroute"));
 
 // listener
 app.listen(PORT, () => {
